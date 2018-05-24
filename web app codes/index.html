@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>HomeControl</title>
+
+	<!-- CSS includes -->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet" type="text/css">
+	<link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/theme.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="http://prepbootstrap.com/Content/shieldui-lite/dist/css/light/all.min.css" />
+
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+	<script src="p5.speech.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+	
+    <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  //document.addEventListener('DOMContentLoaded', function () {
+  
+  function f1()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device1').set(1);
+  }
+  function f2()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device1').set(0);
+  }
+  function f3()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device2').set(1);
+  }
+  function f4()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device2').set(0);
+  }
+  function f5()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device3').set(1);
+  }
+  function f6()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device3').set(0);
+  }
+  function f7()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device4').set(1);
+  }
+  function f8()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device4').set(0);
+  }
+  
+  
+  
+   //});
+ 
+	<!--speech recognition-->
+    
+	 // new P5.SpeechRec object
+function speech()
+	{
+var myRec = new p5.SpeechRec();
+	
+	//	myRec.onResult = showResult;
+		myRec.start();
+	
+		setTimeout(function(){if(myRec.resultValue==true) {
+		//alert("Hello! I am an alert box!!");
+			//document.getElementById("test").innerHTML=myRec.resultString;
+            console.log(myRec.resultString);
+			if(myRec.resultString=='on'||myRec.resultString=='start'||myRec.resultString=='strt'){
+			f1();
+			alert("Device is turned on")
+			}
+			else if(myRec.resultString=='off'||myRec.resultString=='stop'||myRec.resultString=='of')
+			{
+			f2();
+			alert("Device is turned off")
+			}
+			else
+			{
+			alert("Wrong command:"+myRec.resultString+"  ::Please Try again")
+			}
+			
+			
+		}},4000);
+	
+	}
+	function speech2()
+	{
+var myRec = new p5.SpeechRec();
+	
+	//	myRec.onResult = showResult;
+		myRec.start();
+	
+		setTimeout(function(){if(myRec.resultValue==true) {
+		//alert("Hello! I am an alert box!!");
+			document.getElementById("test").innerHTML=myRec.resultString;
+            console.log(myRec.resultString);
+			if(myRec.resultString=="on"||myRec.resultString=="start"||myRec.resultString=="strt"){
+			f3();
+			alert("Device is turned on")
+			}
+			else if(myRec.resultString=='off'||myRec.result=="stop"||myRec.result=="of")
+			{
+			f4();
+			alert("Device is turned off")
+			}
+			else
+			{
+			alert("Wrong command:"+myRec.resultString+" !!Please Try again")
+			}
+			
+			
+		}},4000);
+	
+	}
+	function speech3()
+	{
+var myRec = new p5.SpeechRec();
+	
+	//	myRec.onResult = showResult;
+		myRec.start();
+	
+		setTimeout(function(){if(myRec.resultValue==true) {
+		//alert("Hello! I am an alert box!!");
+			document.getElementById("test").innerHTML=myRec.resultString;
+            console.log(myRec.resultString);
+			if(myRec.resultString=="on"||myRec.resultString=="start"||myRec.resultString=="strt"){
+			f5();
+			alert("Device is turned on")
+			}
+			else if(myRec.resultString=='off'||myRec.result=="stop"||myRec.result=="of")
+			{
+			f6();
+			alert("Device is turned off")
+			}
+			else
+			{
+			alert("Wrong command:"+myRec.resultString+" !!Please Try again")
+			}
+			
+			
+		}},4000);
+	
+	}
+	function speech4()
+	{
+var myRec = new p5.SpeechRec();
+	
+	//	myRec.onResult = showResult;
+		myRec.start();
+	
+		setTimeout(function(){if(myRec.resultValue==true) {
+		//alert("Hello! I am an alert box!!");
+			document.getElementById("test").innerHTML=myRec.resultString;
+            console.log(myRec.resultString);
+			if(myRec.resultString=="on"||myRec.resultString=="start"||myRec.resultString=="strt"){
+			f7();
+			alert("Device is turned on")
+			}
+			else if(myRec.resultString=='off'||myRec.result=="stop"||myRec.result=="of")
+			{
+			f8();
+			alert("Device is turned off")
+			}
+			else
+			{
+			alert("Wrong command:"+myRec.resultString+" !!Please Try again")
+			}
+			
+			
+		}},4000);
+	
+	}
+	  
+
+
+	
+
+
+
+</script>
+   
+	
+	
+	
+<style>
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="#" title="Home Appliance Control">
+                <h3>MyHome</h3>
+            </a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+
+<div class="container-home">
+    <div class="container">
+	    <div class="page-header" id="home">
+		    <h1 class="text-center text-danger">Visualize the power consumption and Control the devices</h1>
+			<br />
+		    
+	    </div>
+    </div>
+</div>
+
+<div class="container-features">
+    <div class="container">
+	    <div class="page-header" id="features">
+		    <h1 class="text-center">DEVICES</h1>
+		    
+	    </div>
+		<br />
+		<div class="row text-center">
+			<div class="col-md-3">
+				<span class="features-circle text-center"><i class="fa fa-thumbs-up fa-5x" aria-hidden="true"></i></span>
+				<h3>AC</h3>
+				<button class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;" onClick="window.location.href='devce2.html'">Visualize</button>
+				 <br><button onclick="f1()" style="background-color:#bdbdb7" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">On</button>
+				 </button><button onclick="f2()" style="background-color:#bdbdb7" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Off</button>
+				 <br><button onclick="speech()" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Speak</button>
+			</div>
+			<div class="col-md-3">
+				<span class="features-circle text-center"><i class="fa fa-male fa-5x" aria-hidden="true"></i></span>
+				<h3>BULB</h3>
+				<button class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Visualize</button>
+			     <br><button onclick="f3()" style="background-color:#bdbdb7" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">On</button>
+				 </button><button onclick="f4()" style="background-color:#bdbdb7" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Off</button>
+			      <br><button onclick="speech2()" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Speak</button>
+			</div>
+			<div class="col-md-3">
+				<span class="features-circle text-center"><i class="fa fa-rocket fa-5x" aria-hidden="true"></i></span>
+				<h3>FAN</h3>
+				<button class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Visualize</button>
+			     <br><button onclick="f5()" style="background-color:#bdbdb7" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">On</button>
+				 </button><button onclick="f6()" style="background-color:#bdbdb7" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Off</button>
+				 <br><button onclick="speech3()" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Speak</button>
+			</div>
+			<div class="col-md-3">
+				<span class="features-circle text-center"><i class="fa fa-rocket fa-5x" aria-hidden="true"></i></span>
+				<h3>T.V.</h3>
+				<button class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Visualize</button>
+			     <br><button onclick="f7()" style="background-color:#bdbdb7" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">On</button>
+				 </button><button onclick="f8()" style="background-color:#bdbdb7" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Off</button>
+				 <br><button onclick="speech4()" class="button-more-success btn btn-lg" type="button" style="margin:10px 0 40px 0;">Speak</button>
+			</div>
+        </div>
+    </div>
+</div>
+<!--<p id="test">Check Checkbox</p>-->
+<footer id="footer" class="clearfix">
+    <div class="container">
+        <div class="row">
+			
+			<div class="col-md-4">
+                <p>
+                    <a class="fa fa-twitter footer-socialicon" target="_blank" href="https://twitter.com/"></a>
+                    <a class="fa fa-facebook footer-socialicon" target="_blank" href="https://www.facebook.com/"></a>
+                    <a class="fa fa-google-plus footer-socialicon" target="_blank" href="https://plus.google.com/"></a>
+                    <a class="fa fa-linkedin footer-socialicon" target="_blank" href="https://plus.google.com/"></a>
+                </p>
+            </div>
+            
+        </div>
+    </div>
+</footer>
+
+<script src="js/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/jquery.mixitup.min.js"></script>
+<link href="css/magnific-popup.css" rel="stylesheet">
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script src="js/theme.js"></script>
+<script type="text/javascript" src="http://prepbootstrap.com/Content/shieldui-lite/dist/js/shieldui-lite-all.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(function($) {
+		// Mix It Up Gallery and Magnific Popup setup
+        $('.container-gallery').mixItUp();
+        $('.container-gallery').magnificPopup({
+            delegate: 'a',
+            type: 'image'
+        });
+        // Google Maps setup
+        var googlemap = new google.maps.Map(
+            document.getElementById('googlemap'),
+            {
+                center: new google.maps.LatLng(44.5403, -78.5463),
+                zoom: 8,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+        );
+    });
+
+	$(document).ready(function () {
+        $("#order1").shieldQRcode({
+            mode: "byte",
+            size: 150,
+            value: "https://somesite/order?plan=1"
+        });
+        $("#order2").shieldQRcode({
+            mode: "byte",
+            size: 150,
+            value: "https://somesite/order?plan=2"
+        });
+        $("#order3").shieldQRcode({
+            mode: "byte",
+            size: 150,
+            value: "https://somesite/order?plan=3"
+        });
+    });
+</script>
+
+</body>
+</html>

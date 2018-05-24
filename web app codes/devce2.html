@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>HomeControl</title>
+         
+	<!-- CSS includes -->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet" type="text/css">
+	<link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/theme.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="http://prepbootstrap.com/Content/shieldui-lite/dist/css/light/all.min.css" />
+	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+    <script src="plot.js"></script>
+		<script src="plotly.js"></script>
+	<script>
+  var power_level
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  
+  //document.addEventListener('DOMContentLoaded', function () {
+  //console.log(power_level);
+	
+
+safepower=1000;
+
+<!-- graph code-->
+function recalc(){
+for(var i=1;i<ilosc;i++)
+{
+data1[i-1]=data1[i];
+}
+var power_level;
+var ref = database.ref("device1");
+   ref.on("value", gotData);
+   
+  function gotData(data) {
+  var power = data.val();
+  // Grab the keys to iterate over the object
+  var keys = Object.keys(power);
+//  console.log(keys);
+  for (var i = keys.length-1; i < keys.length; i++) {
+    var key = keys[i];
+    // Look at each fruit object!
+    power_level = power[key].power_value;
+	//console.log(power_level);
+     }
+	}
+	/*function errData(err)
+	{
+	console.log('Error!');
+	console.log(err);
+	}*/
+	setTimeout(function(){ console.log(power_level);
+data1[ilosc-1]=power_level;
+if(data1[ilosc-1]>safepower)
+myp.plotColor='rgba(255,0,0,1)';
+else
+myp.plotColor='rgba(0,255,0,1)';
+myp.data=data1;
+myp.plot();
+	}, 2000)	;
+}
+function prepData(range,amount){
+var arr= new Array(amount);
+for(var i=0;i<amount;i++){
+arr[i]=0.5;
+}
+return arr;
+}
+var ilosc=200;
+var myp=new MakeDraw();
+myp.id="canv";
+//myp.plotColor='rgba(0,255,0,1)';
+myp.gridColor='rgba(0,0,0,0.05)';
+myp.fSize=15;
+myp.enumerateP=0;
+myp.enumerateH=0;
+myp.enumerateV=1;
+var data1=prepData(10,ilosc);
+var t=setInterval('recalc()',5000);
+
+
+
+
+<!-- graph code Rashid Aziz-->
+
+ 
+ function gotdata1(data){
+ //console.log("running here");
+ var power1 = data.val();
+ var keys1 = Object.keys(power1);
+ //console.log(key);
+ total1=keys1.length;
+ //console.log(total);
+ var arr1 = new Array(total1);
+ var timestamp = new Array(total1);
+ //console.log(arr);
+ for(var i= 0; i<total1;i++){
+ var key1 = keys1[i];
+ timestamp[i] = power1[key1].timestamp;
+ power_level1 = power1[key1].power_value;
+ //console.log(timestamp[i]);
+ arr1[i]=power_level1;
+ //console.log(arr1[i]);
+}
+//console.log(arr);
+//console.log(timestamp);
+var trace = {
+  type: "scatter",
+  mode: "lines",
+  name: 'usage',
+  x: timestamp,
+  y: arr1,
+  line: {color: '#1638e1'}
+}
+war=[trace]
+
+var layout = {
+  title: 'Graph showing Usage History till Now',
+  xaxis: {
+    title: 'Timestamp',
+    titlefont: {
+      family: 'Courier New, monospace',
+      size: 18,
+      color: '#7f7f7f'
+    }
+  },
+  yaxis: {
+    title: 'Power',
+    titlefont: {
+      family: 'Courier New, monospace',
+      size: 18,
+      color: '#7f7f7f'
+    }
+  }
+};
+
+var graph = document.getElementById('graph');
+
+
+Plotly.newPlot('graph',war, layout);
+}
+
+var datapoint = database.ref("device1")
+datapoint.once("value",gotdata1)
+
+
+
+<!-- safe power level code by Amish Gupta-->
+
+
+
+var datapoint2 = database.ref("safe")
+datapoint2.once("value",gotdata2)
+
+function gotdata2(data){
+ //console.log("running here babua");
+ var power2 = data.val();
+ //console.log(power2.device1);
+ safepower=power2.device1;
+ document.getElementById("demo").value = power2.device1;
+}
+function f1()
+{
+safepower=document.getElementById("demo").value;
+ var ref = firebase.database().ref('safe');
+ref.child('device1').set(safepower);
+}
+
+<!-- total time code by Amish Gupta -->
+/*
+var currentdate = new Date(); 
+var times3;
+var ref3 = database.ref("device1");
+   ref3.once("value", gotData3);
+   
+      var date= currentdate.getDate() 
+     /*  var month=currentdate.getMonth()+1  
+       var year=currentdate.getFullYear()  
+        var hrs=currentdate.getHours()   
+        var minutes=currentdate.getMinutes()  
+        var sec=currentdate.getSeconds()
+//console.log(date);*/
+//console.log(date)
+/*var on=0;
+var off=0;
+var prev=-1;
+  function gotData3(data) {
+  var power = data.val();
+  // Grab the keys to iterate over the object
+  var keys = Object.keys(power);
+  for (var i = keys.length-1; i >=0; i--) {
+    var key = keys[i];
+    // Look at each fruit object!
+    times3 = power[key].timestamp;
+       // console.log("aaaa")
+ 	//console.log(times3); 
+       
+    var s1 = times3.split("-");  
+    //for (var j in s1) {  
+    //console.log(j+" "+s1[j]+" oh lala ");   
+      //console.log(s1[2])   
+    // }
+var s2=s1[2].split(" ");
+//console.log(s2[0])
+var s3=s2[1].split(":");
+//console.log(s3[0]);
+//console.log(s3[1]);
+   if(s2[0]==date)
+{
+console.log(s3[0]+""+s3[1])
+if(on==0 && off==0)
+{
+if(power[key].power_value==0)
+off=1;
+else
+on=1;
+}
+else
+{
+if(on==1)
+ {
+  if(power[key].power_value==0)
+  {time=time+prev-s3[0];
+   off=1;
+   on=0;
+  }
+ }
+else
+ {
+  if(power[key].power_value!=0)
+   {
+     on=1;
+     off=0;
+   }
+ }
+}
+else
+ break;
+}
+}
+*/
+</script>
+	
+	
+<style>
+.line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2px;
+}
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+#wrapper {
+     width: 2000px;
+    border: 1px solid black;
+    overflow: hidden; 
+    }
+#first {
+   width: 800px;
+    float:left; /* add this */
+    border: 1px solid red;
+}
+#second {
+    border: 1px solid green;
+    overflow: hidden; 
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="#" title="Home Appliance Control">
+                <h3>MyHome</h3>
+            </a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+<!--graph1-->
+<div id="wrapper">
+<div id="first">
+<h3 style="float:center;" >Map Showing Real Time Power Usage</h1>
+<canvas style="left-padding:100px;" width="650" height="400" id="canv"></canvas>
+</div>
+<div id="second">
+<form action="/action_page.php">
+  Safe power level:<br>
+  <input type="text" name="firstname" id="demo" value="Save power level">
+  <br><br>
+  <input onclick="f1()" value="Reset">
+</form>
+</div>
+</div> 
+<!--graph1 rashid-->
+<div class="container-fluid">
+ 
+  <div class="row">
+  <div class="column">
+<div id="graph">
+<canvas width="650" height="400" id="canv"></canvas>
+
+</div>
+</div>
+</div>
+</div>
+
+<footer id="footer" class="clearfix">
+    <div class="container">
+        <div class="row">
+			
+			<div class="col-md-4">
+                <p>
+                    <a class="fa fa-twitter footer-socialicon" target="_blank" href="https://twitter.com/"></a>
+                    <a class="fa fa-facebook footer-socialicon" target="_blank" href="https://www.facebook.com/"></a>
+                    <a class="fa fa-google-plus footer-socialicon" target="_blank" href="https://plus.google.com/"></a>
+                    <a class="fa fa-linkedin footer-socialicon" target="_blank" href="https://plus.google.com/"></a>
+                </p>
+            </div>
+            
+        </div>
+    </div>
+</footer>
+
+<script src="js/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/jquery.mixitup.min.js"></script>
+<link href="css/magnific-popup.css" rel="stylesheet">
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script src="js/theme.js"></script>
+<script type="text/javascript" src="http://prepbootstrap.com/Content/shieldui-lite/dist/js/shieldui-lite-all.min.js"></script>
+
+</body>
+</html>
