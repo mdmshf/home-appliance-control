@@ -1,0 +1,84 @@
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="js/firebase.js"></script>
+<style src="/bootstrap/css/bootstrap.min.css"></style>
+<script>
+  var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+  };
+ <!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM --> 
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  var datapoint = database.ref("device1")
+  //console.log('haha its not going inside whatever you do');
+datapoint.once("value",setdata)
+	function setdata(data){
+	//console.log('not coming here');
+	var power = data.val();
+ var keys = Object.keys(power);
+ total=keys.length;
+ //console.log(keys,total);
+ var key=new Array(24);
+ for(var i=0;i<24;i++)
+ key[i]=0;
+ var lday=0;
+ var cday=0;
+ var count=0;
+ var hr=0;
+ var lhr=0;
+ var count2=0;
+ for(var i=0;i<total;i++){
+ var temp1=keys[i];
+ var temp=power[temp1].timestamp;
+ if(lday==0){
+ lday=Number(temp[8]+temp[9]);
+ cday=Number(temp[8]+temp[9]);
+ }
+ else{
+ if(lday==cday){
+ hr=+Number(temp[11]+temp[12]);
+ if(lhr==0){
+ lhr=hr;
+ }
+ if(lhr==hr){
+ count++;
+ if(power[temp1].power_value>0)
+ count2++;
+ }
+ else{
+ if(count2/count>0.5)
+ key[lhr]+=1;
+ else
+ key[lhr]=0;
+ lhr=hr;
+ count2=0;
+ count=0;
+ }
+ }
+ else{
+ count=0;
+ count2=0;
+}
+ }
+ }
+ console.log(key);
+ var data = [{
+  x: ['1 am','2 am','3 am','4 am','5 am','6 am','7 am','8 am','9 am','10 am','11 am','12 pm','1 pm','2 pm','3 pm','4 pm','5 pm','6 pm','7 pm','8 pm','8 pm','9 pm','10 pm','11 pm','12 am'],
+  y: key,
+  type: 'bar'
+}];
+
+Plotly.newPlot('myDiv', data);
+}
+ </script>
+ <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+ </html>
+ <!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->

@@ -1,0 +1,31 @@
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login V3</title>
+	</head>
+<body>
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script>
+var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+  };
+  console.log("hello");
+  firebase.initializeApp(config);
+  var database = firebase.database();
+var ref = database.ref('users');
+ref.child('signedin').set(0);
+console.log("out");
+setTimeout(function(){
+    sessionStorage.clear();
+    window.location.href = "login.html";
+},5000);
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+</script>
+</body>
+</html>

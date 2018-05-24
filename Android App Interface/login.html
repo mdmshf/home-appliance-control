@@ -1,0 +1,200 @@
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sign-Up/Login Form</title>
+  <link href='css/max.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/min.css">
+
+  
+    <link rel="stylesheet" href="css/style.css"> 
+	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script>
+					var dt = new Date();
+var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+  };
+  firebase.initializeApp(config);
+  <!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+  var database = firebase.database();
+			function writeToPage(){
+
+					var fn = document.getElementById("fname").value;
+					var un = document.getElementById("uname").value;
+					var em = document.getElementById("email").value;
+					var cm = document.getElementById("newcom").value;
+					console.log(fn,un,em,cm);
+					if(fn === ""){
+						alert("Please fill out the Full Name field.");
+						document.getElementById("p1").style.color = "red";
+						document.getElementById("p1").style.fontFamily = "Arial";
+						document.getElementById("p1").style.fontSize = "larger"; 
+					}
+					else if(un === ""){
+						alert("Please fill out the Username field.");
+						document.getElementById("p2").style.color = "red";
+						document.getElementById("p2").style.fontFamily = "Arial";
+						document.getElementById("p2").style.fontSize = "larger";
+					}
+					else if(em === ""){
+						alert("Please fill out email field.");
+						document.getElementById("p3").style.color = "red";
+						document.getElementById("p3").style.fontFamily = "Arial";
+						document.getElementById("p3").style.fontSize = "larger";
+					}
+					else if(cm === ""){
+						alert("Please fill out the comment section.");
+						document.getElementById("p5").style.color = "red";
+						document.getElementById("p5").style.fontFamily = "Arial";
+						document.getElementById("p5").style.fontSize = "larger";
+					}
+					else{
+							console.log("inside");
+						var ref = database.ref('users');
+						ref.child('fname').set(fn);
+						ref.child('uname').set(un);
+						ref.child('email').set(em);
+						ref.child('newcom').set(cm);
+						ref.child('signedin').set(1);
+						window.location.href = "app.html";
+					}	
+				}
+
+				
+				
+		var user;
+var pass;	
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->	
+function validate(){
+var emai = document.getElementById("email1").value;
+var passwo = document.getElementById("password").value;
+var ref= database.ref('users');
+var user;
+var pass;
+ref.on("value",gotData);
+function gotData(data) {
+   user1 = data.val();
+   user=user1.email;
+   pass=user1.newcom;
+   console.log(user,pass);
+     }
+setTimeout(function(){console.log(emai,passwo,user,pass);
+if ( emai == user && passwo == pass){
+//alert ("Login successfully");
+ref.child('signedin').set(1);
+window.location.href = "app.html"; // Redirecting to other page.
+return false;
+}
+else{
+
+alert("Wrong Credentials");
+
+}},2000);
+
+}
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+		</script>
+  
+</head>
+
+<body>
+
+  <div class="form">
+      
+      <ul class="tab-group">
+        <li class="tab"><a href="#signup">Sign Up</a></li>
+        <li class="tab active"><a href="#login">Log In</a></li>
+      </ul>
+      
+      <div class="tab-content">
+        <div id="signup">   
+          <h1>Sign Up for Free</h1>
+          
+          <form action="/" method="post">
+          
+          <div class="top-row" id="p1">
+            <div class="field-wrap">
+              <label>
+                First Name<span class="req">*</span>
+              </label>
+              <input type="text" id="fname" required autocomplete="off" />
+            </div>
+        
+            <div class="field-wrap"  id="p2">
+              <label>
+                Last Name<span class="req">*</span>
+              </label>
+              <input type="text"id="uname" required autocomplete="off"/>
+            </div>
+          </div>
+
+          <div class="field-wrap"  id="p3">
+            <label>
+              Email Address<span class="req">*</span>
+            </label>
+            <input type="email"  id="email"  required autocomplete="off"/>
+          </div>
+          
+          <div class="field-wrap"  id="p5">
+            <label>
+              Set A Password<span class="req">*</span>
+            </label>
+            <input type="password" id="newcom" required autocomplete="off"/>
+          </div>
+          
+          <button type="button" onclick="writeToPage()" class="button button-block"/>Get Started</button>
+          
+          </form>
+
+        </div>
+        <!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+        <div id="login">   
+          <h1>Welcome Back!</h1>
+          
+          <form action="/" method="post">
+          
+            <div class="field-wrap">
+            <label>
+              Email Address<span class="req">*</span>
+            </label>
+            <input type="email1" id="email1" required autocomplete="off"/>
+          </div>
+          
+          <div class="field-wrap">
+            <label>
+              Password<span class="req">*</span>
+            </label>
+            <input type="password" id="password" required autocomplete="off"/>
+          </div>
+          
+          <p class="forgot"><a href="#">Forgot Password?</a></p>
+          
+          <button type="button" onclick="validate()"  class="button button-block"/>Log In</button>
+          
+          </form>
+
+        </div>
+        
+      </div><!-- tab-content -->
+      <!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+</div> <!-- /form -->
+  <script src='js/min.js'></script>
+
+  
+
+    <script  src="js/index.js"></script>
+
+
+
+
+</body>
+
+</html>
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->

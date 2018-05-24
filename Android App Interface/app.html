@@ -1,0 +1,276 @@
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+
+<!DOCTYPE html>
+<html>
+<title>Home Automation</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/w3.css">
+<link rel="stylesheet" href="css/font.css">
+<script src="js/fire.js"></script>
+<script src="js/jquer.js"></script>
+<script src="js/setconfig.js"></script>	
+<script src="js/innitailset.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/togglestyle.css">
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Logo</span>
+  
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="image/avatar3.png" class="w3-circle w3-margin-right" style="width:46px">
+	  Your Bill:<div id="billing"></div>
+    </div>
+
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>Dashboard</h5>
+  </div>
+  <div class="w3-bar-block">
+ <!--   <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>  -->
+    <a href="auto/automate.html" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i> Add Preferences</a>
+	<a href="auto/preferences.html" class="w3-bar-item w3-button w3-padding "><i class="fa fa-users fa-fw"></i>Show Preferences</a>
+ <!--   <a href="device1.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Visualize Device1</a>
+	<a href="device2.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Visualize Device2</a>  -->
+ <!--   <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Traffic</a>   -->
+ <!--   <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>    -->
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-plus fa-fw"></i>  Add Device</a>     
+  <!--  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>        -->
+ <!--   <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a>        -->
+ <!--   <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a>    -->
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a>
+	<a href="pi.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-money fa-fw"></i>  Bills</a>
+	<a href="analytics1.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Device 1 analytics</a>
+	<a href="analytics2.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Device 2 analytics</a><br><br>
+	<a href="signout.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-plus fa-fw"></i>  Log Out</a>     
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i>  Devices</b></h5>
+  </header>
+
+  
+  
+<div class="w3-row-padding w3-margin-bottom">
+  
+  
+    <div class="w3-quarter w3-padding-small">
+		<div class="w3-container w3-white w3-padding-16">
+			<img class="w3-left" src="image/fan.png">
+			<div class="w3-right">
+					<button style="font-size:24px" type="button" onclick="window.location.href='devce2.html'"> <i class="fa fa-bar-chart"></i></button>
+			</div>
+			<div class="w3-right">
+				<label class="switch1">
+					<input class="switch-input1" type="checkbox" />
+					<span class="switch-label1" data-on="ON" data-off="OFF"></span> 
+					<span class="switch-handle1"></span>
+				</label>
+			</div>
+			<div class="w3-clear"></div>
+			<h4>Device1</h4>
+		</div>
+    </div>
+	
+	
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->	
+	
+    <div class="w3-quarter w3-padding-small">
+		<div class="w3-container w3-white w3-padding-16">
+	  
+			<img class="w3-left" src="image/bulb.png">
+			<div class="w3-right">
+				<button style="font-size:24px" type="button" onclick="window.location.href='devce1.html'"> <i class="fa fa-bar-chart"></i></button>
+			</div>
+			<div class="w3-right">
+				<label class="switch2">  
+					<input class="switch-input2" type="checkbox" />
+					<span class="switch-label2" data-on="ON" data-off="OFF"></span> 
+					<span class="switch-handle2"></span>
+				</label>
+			</div>
+			<div class="w3-clear"></div>
+			<h4>Device2</h4>
+		</div>
+    </div>
+	
+	
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->	
+	
+    <div class="w3-quarter w3-padding-small">
+		<div class="w3-container w3-white w3-padding-16">
+		<img class="w3-left" src="image/ac.png">
+		<div class="w3-right">
+			<button style="font-size:24px" type="button" onclick="window.location.href='devce2.html'"> <i class="fa fa-bar-chart"></i></button>
+		</div>
+		<div class="w3-right">
+			<label class="switch3"> 
+				<input class="switch-input3" type="checkbox" />
+				<span class="switch-label3" data-on="ON" data-off="OFF"></span> 
+				<span class="switch-handle3"></span>
+			</label>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Device3</h4>
+		</div>
+    </div>
+	
+	
+	
+    <div class="w3-quarter w3-padding-small">
+		<div class="w3-container w3-white w3-padding-16">
+			<img class="w3-left" src="image/tv.png">
+			<div class="w3-right">
+				<button style="font-size:24px" type="button" onclick="window.location.href='devce1.html'"> <i class="fa fa-bar-chart"></i></button>
+	   
+			</div>
+			<div class="w3-right">
+				<label class="switch4">  
+					<input class="switch-input4" type="checkbox" />
+					<span class="switch-label4" data-on="ON" data-off="OFF"></span> 
+					<span class="switch-handle4"></span>
+				</label>
+			</div>
+			<div class="w3-clear"></div>
+				<h4>Device4</h4>
+		</div>
+	</div>
+	
+</div>
+
+  
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+
+  <!-- End page content -->
+</div>
+
+<script>
+// Get the Sidebar
+var s=0;
+var bill_rate=5.5;
+function bill(){
+var datapoint1 = database.ref("device1");
+datapoint1.once("value",calc1);
+	function calc1(data){
+   //console.log('coming in calc1 function');
+	var power = data.val();
+	var keys = Object.keys(power);
+	total=keys.length;
+	//console.log('no of data points '+total);
+	for(var i= 0; i<total;i++){
+	var key = keys[i];
+	s+= power[key].power_value;
+	//console.log(power[key].power_value,s);
+	}
+	s=(s/(60*60*1000))*5*bill_rate*total/(60*60);
+	firebase.database().ref('bill/device1').set(s);
+	//console.log(s);
+	//return s;;
+	}
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->	
+var datapoint2 = database.ref("device2");
+datapoint2.once("value",calc2);
+	function calc2(data){
+   //console.log('coming in calc2 function');
+	var power = data.val();
+	var keys = Object.keys(power);
+	total=keys.length;
+	//console.log('no of data points '+total);
+	for(var i= 0; i<total;i++){
+	var key = keys[i];
+	s+= power[key].power_value;
+	//console.log(power[key].power_value,s);
+	}
+	s=(s/(60*60*1000))*5*bill_rate*total/(60*60);
+	firebase.database().ref('bill/device2').set(s);
+	//console.log(s);
+	//return s;;
+	}	
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->	
+var datapoint3 = database.ref("device3");
+datapoint3.once("value",calc3);
+	function calc3(data){
+   //console.log('coming in calc3 function');
+	var power = data.val();
+	var keys = Object.keys(power);
+	total=keys.length;
+	//console.log('no of data points '+total);
+	for(var i= 0; i<total;i++){
+	var key = keys[i];
+	s+= power[key].power_value;
+	//console.log(power[key].power_value,s);
+	}
+	s=(s/(60*60*1000))*5*bill_rate*total/(60*60);
+	firebase.database().ref('bill/device3').set(s);
+	//console.log(s);
+	//return s;;
+	}
+	
+  var dp = database.ref("bill")
+dp.once("value",setdatabill)
+	function setdatabill(data){
+	var power = data.val();
+ var keys = Object.keys(power);
+ total=keys.length;
+ //console.log('just checking',keys,total);
+ var ytot=0;
+ var y=new Array(total);
+ for(var i=0;i<total;i++){
+ var temp=keys[i];
+ y[i]=power[temp];
+ //console.log(y[i]);
+ ytot+=y[i];
+ //console.log('inner',ytot);
+ }
+ //console.log('yah',ytot);
+ document.getElementById("billing").innerHTML='&#x20B9 '+String(ytot.toPrecision(2));
+ }	
+ }
+bill();
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+    if (mySidebar.style.display === 'block') {
+        mySidebar.style.display = 'none';
+        overlayBg.style.display = "none";
+    } else {
+        mySidebar.style.display = 'block';
+        overlayBg.style.display = "block";
+    }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+    mySidebar.style.display = "none";
+    overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+</html>
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->

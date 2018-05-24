@@ -1,0 +1,65 @@
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="js/firebase.js"></script>
+<script src="js/pijs.js"></script>
+<style src="/bootstrap/css/bootstrap.min.css"></style>
+<script>
+  var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+  };
+ <!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM --> 
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  var datapoint = database.ref("bill")
+datapoint.once("value",setdata)
+	function setdata(data){
+	var power = data.val();
+ var keys = Object.keys(power);
+ total=keys.length;
+ //console.log(keys,total);
+ var y=new Array(total);
+ var ytot=0;
+ for(var i=0;i<total;i++){
+ var temp=keys[i];
+ y[i]=power[temp];
+ //console.log(y[i]);
+ ytot+=y[i];
+ //console.log(ytot);
+ }
+ <!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+ //console.log('total',ytot);
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title: {
+		text: "Your Bill usage"
+	},
+	data: [{
+		type: "pie",
+		startAngle: 240,
+		yValueFormatString: "##0.00\"%\"",
+		indexLabel: "{label} {y}",
+		dataPoints: [
+			{y:y[0]/ytot *100, label: "Device 1"},
+			{y:y[1]/ytot *100, label: "Device 2"},
+			{y:y[2]/ytot *100, label: "Device 3"},
+			{y:y[3]/ytot *100, label: "Device 4"}
+		]
+	}]
+});
+chart.render();
+}
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 50%; width: 100%;"></div>
+</body>
+</html>
+<!-- coded at Smart India Hackathon 2018 Kurnool by Team_ORCA  30/3/2018 2:13 AM -->

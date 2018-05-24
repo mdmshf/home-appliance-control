@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Your Preferences</title>
+  <link href='css/max.css' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="css/min.css">
+  <link rel="stylesheet" href="css/style.css"> 
+  <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+
+<script>
+
+var dt = new Date();
+var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+};
+firebase.initializeApp(config);
+var database = firebase.database();
+var datapoint = database.ref("preference");
+var deletePoint;
+datapoint.once("value", function(data){
+    var power = data.val();
+    var keys = Object.keys(power);
+    //console.log(keys.length);
+
+    for (var i = 0; i < keys.length; i++){
+        var key = keys[i];
+    //    console.log(power[key]);
+        let index = i+1;
+        let head = document.getElementById("heading");
+        let str = "<div class='class_design' id='design"+i+"'>";
+         str += "<h3 style='padding:5px;padding-top:15px;'>Preference " + index + "</h3>";
+        //head.insertAdjacentHTML( 'beforeend', '<div id="design">' );
+        //head.insertAdjacentHTML( 'beforeend', str );
+        let value = power[key];
+        let device = value.device;
+        str += "<h5 style='padding:5px;'> Device " + device + " </h5>";
+        //head.insertAdjacentHTML( 'beforeend', str );
+        let action = value.action;
+        str += "<h5 style='padding:5px;'> Action : ";
+        if (action === "1"){
+            str += "ON";
+        }else {
+            str += "OFF";
+        }
+        str += "</h5>";
+        //head.insertAdjacentHTML( 'beforeend', str );
+        let hours = value.hours;
+        let sentHours = hours;
+        let mins = value.minutes;
+        let am = 0;
+       // mins < 10 ? mins = "0"+mins : mins = mins;
+        //console.log("mins ",mins);
+        hours >= 12 ? am = 0 : am = 1;
+        hours > 12 ? hours = hours - 12 : hours = hours;
+        //hours = toString(hours);
+     //   console.log("min type ", typeof(device));
+        //console.log("hours ", hours);
+        am ? substr = " AM" : substr = " PM";
+        str += "<h5 style='padding:5px;'>Time :- " +  hours + " : " + mins + substr + "</h5>";
+        str += '<button style="margin-left:400px;margin-bottom:15px;" onclick = "deleteData(\''+i+','+device+','+action+','+sentHours+','+mins + '\')">Delete</button>'
+        str += "</div>";
+        head.insertAdjacentHTML( 'beforeend', str );
+        //head.insertAdjacentHTML( 'beforeend', "<br>" );
+        //head.insertAdjacentHTML( 'beforeend', "</div>" );
+    }
+});
+
+function deleteData (str){
+    console.log("delete button pressed");
+    var arr = str.split(',');
+    console.log(arr);
+    let i = arr[0],
+        device = arr[1], 
+        action = arr[2], 
+        hours = arr[3], 
+        mins = arr[4];
+  //  console.log("i: ",i);
+    //console.log(typeof(i));
+    //let index = parseInt(i);
+    //console.log(typeof(index));
+    datapoint = database.ref("preference");
+    datapoint.once("value", function(data){
+    var power = data.val();
+    var keys = Object.keys(power);
+    for (let ind = 0; ind < keys.length; ind++){
+        var key = keys[ind];
+        var value = power[key];
+        console.log(power[key]);
+        if (device == value.device && action == value.action && hours == value.hours && mins == value.minutes){
+            datapoint.child(key).remove();
+            console.log("inside");
+            break;
+        }
+    }
+    });
+    let str_id = "design" + i;
+    document.getElementById(str_id).remove();
+    /*console.log(typeof(i));
+    console.log(device);
+    console.log(typeof(action));
+    console.log(hours);
+    console.log(typeof(mins));*/
+}
+/*function writeToPage(){
+    console.log("inside");
+	var ref = database.ref('users');
+	ref.child('device').set(device);
+	ref.child('hours').set(hours);
+	ref.child('actions').set(actions);
+	ref.child('minutes').set(minutes);
+}	
+var device1=0,hours=0,actions=0,minutes;	
+function setdata(){
+	var e = document.getElementById("dvc"); 
+	device = e.options[e.selectedIndex].value;
+	var e2 = document.getElementById("hours"); 
+	hours = e.options[e.selectedIndex].value;
+	var e3 = document.getElementById("actions"); 
+	actions = e.options[e.selectedIndex].value;
+	var e4 = document.getElementById("minutes"); 
+	minutes = e.options[e.selectedIndex].value;
+	writeToPage();
+}
+*/
+</script>
+  
+</head>
+
+<body>
+    
+    <div class="form">
+        
+        <div>
+            <center>
+                <h1>Your Preferences</h1>
+            </center>
+        </div>
+        
+        <div id="heading">
+            
+        </div>
+    
+            
+        
+    </div><!-- tab-content -->
+      
+    <script src='js/min.js'></script>
+
+    <script  src="js/index.js"></script>
+
+</body>
+
+</html>
