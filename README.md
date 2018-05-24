@@ -21,4 +21,4 @@ A wireless home appliance control and monitor system using Iot and central serve
 * Raspberry Pi
 * Firebase
 
-/*Detailed description about the project and demo are given in attached [presentation](https://github.com/mdmshf/home-appliance-control/blob/master/PPT.pptx)
+## \*Detailed description about the project and demo are given in attached [presentation](https://github.com/mdmshf/home-appliance-control/blob/master/PPT.pptx)
