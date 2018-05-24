@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html>
+<title>Home Automation</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+<script src="js/p5.speech.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<style>
+.switch1,.switch2,.switch3,.switch4 {
+  position: relative;
+  display: block;
+  vertical-align: top;
+  width: 100px;
+  height: 30px;
+  padding: 3px;
+  margin: 0 10px 10px 0;
+  background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+  background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+  border-radius: 18px;
+  box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+.switch-input1,.switch-input2,.switch-input3,.switch-input4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+.switch-label1,.switch-label2,.switch-label3,.switch-label4 {
+  position: relative;
+  display: block;
+  height: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+  background: #eceeef;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+}
+.switch-label1:before, .switch-label1:after,.switch-label2:before, .switch-label2:after,.switch-label3:before, .switch-label3:after,.switch-label4:before, .switch-label4:after {
+  position: absolute;
+  top: 50%;
+  margin-top: -.5em;
+  line-height: 1;
+  -webkit-transition: inherit;
+  -moz-transition: inherit;
+  -o-transition: inherit;
+  transition: inherit;
+}
+.switch-label1:before,.switch-label2:before,.switch-label3:before,.switch-label4:before {
+  content: attr(data-off);
+  right: 11px;
+  color: #aaaaaa;
+  text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+}
+.switch-label1:after,.switch-label2:after,.switch-label3:after,.switch-label4:after{
+  content: attr(data-on);
+  left: 11px;
+  color: #FFFFFF;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+}
+.switch-input1:checked ~ .switch-label1,.switch-input2:checked ~ .switch-label2,.switch-input3:checked ~ .switch-label3,.switch-input4:checked ~ .switch-label4 {
+  background: #0088cc;
+  border-color: #0088cc;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+}
+.switch-input1:checked ~ .switch-label1:before,.switch-input2:checked ~ .switch-label2:before,.switch-input3:checked ~ .switch-label3:before,.switch-input4:checked ~ .switch-label4:before {
+  opacity: 0;
+}
+.switch-input1:checked ~ .switch-label1:after,.switch-input2:checked ~ .switch-label2:after,.switch-input3:checked ~ .switch-label3:after,.switch-input4:checked ~ .switch-label4:after {
+  opacity: 1;
+}
+.switch-handle1,.switch-handle2,.switch-handle3,.switch-handle4 {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+  background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+  border-radius: 100%;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+.switch-handle1:before,.switch-handle2:before,.switch-handle3:before,.switch-handle4:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -6px 0 0 -6px;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+  background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+  border-radius: 6px;
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+}
+.switch-input1:checked ~ .switch-handle1,.switch-input2:checked ~ .switch-handle2,.switch-input3:checked ~ .switch-handle3,.switch-input4:checked ~ .switch-handle4 {
+  left: 74px;
+  box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Transition
+========================== */
+.switch-label1, .switch-handle1,.switch-label2, .switch-handle2,.switch-label3, .switch-handle3,.switch-label4, .switch-handle4 {
+  transition: All 0.3s ease;
+  -webkit-transition: All 0.3s ease;
+  -moz-transition: All 0.3s ease;
+  -o-transition: All 0.3s ease;
+}
+</style>
+
+		<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+    <script src="plot.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"
+		src="app.js">
+</script>
+	<script>
+  var power_level
+  // Initialize Firebase
+var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  
+  //document.addEventListener('DOMContentLoaded', function () {
+  //console.log(power_level);
+	
+
+
+
+<!-- graph code0-->
+function recalc(){
+for(var i=1;i<ilosc;i++)
+{
+data1[i-1]=data1[i];
+}
+var power_level;
+var ref = database.ref("device1");
+console.log("jello");console.log(ref);
+   ref.on("value", gotData);
+   
+   
+  function gotData(data) {
+  var power = data.val();
+  console.log("qwerty");console.log(power);
+  // Grab the keys to iterate over the object
+  var keys = Object.keys(power);
+  console.log(keys);
+  for (var i = keys.length-1; i < keys.length; i++) {
+    var key = keys[i];
+    // Look at each fruit object!
+    power_level = power[key].power_value;
+	console.log(power_level);
+     }
+	}
+	/*function errData(err)
+	{
+	console.log('Error!');
+	console.log(err);
+	}*/
+	setTimeout(function(){ console.log(power_level);
+data1[ilosc-1]=power_level;
+myp.data=data1;
+myp.plot();
+	}, 2000)	;
+}
+
+
+function prepData(range,amount){
+var arr= new Array(amount);
+for(var i=0;i<amount;i++){
+arr[i]=-5;
+}
+return arr;
+}
+
+var ilosc=200;
+var myp=new MakeDraw();
+myp.id="canv";
+myp.plotColor='rgba(200,232,53,1)';
+myp.gridColor='rgba(0,0,0,0.05)';
+myp.fSize=15;
+myp.enumerateP=0;
+myp.enumerateH=0;
+myp.enumerateV=1;
+var data1=prepData(10,ilosc);
+var t=setInterval('recalc()',5000);
+
+
+
+<!-- graph code1-->
+function recalc1(){
+for(var i=1;i<ilosc1;i++)
+{
+data2[i-1]=data2[i];
+}
+var power_level;
+var ref = database.ref("device2");
+   ref.on("value", gotData);
+   
+  function gotData(data) {
+  var power = data.val();
+  // Grab the keys to iterate over the object
+  var keys = Object.keys(power);
+  console.log(keys);
+  for (var i = keys.length-1; i < keys.length; i++) {
+    var key = keys[i];
+    // Look at each fruit object!
+    power_level = power[key].power_value;
+	console.log(power_level);
+     }
+	}
+	/*function errData(err)
+	{
+	console.log('Error!');
+	console.log(err);
+	}*/
+	setTimeout(function(){ console.log(power_level);
+data2[ilosc1-1]=power_level;
+myp1.data=data2;
+myp1.plot();
+	}, 2000)	;
+}
+
+
+function prepData1(range1,amount1){
+var arr1= new Array(amount1);
+for(var i=0;i<amount1;i++){
+arr1[i]=-5;
+}
+return arr1;
+}
+
+var ilosc1=200;
+var myp1=new MakeDraw();
+myp1.id="canv1";
+myp1.plotColor='rgba(200,232,53,1)';
+myp1.gridColor='rgba(0,0,0,0.05)';
+myp1.fSize=15;
+myp1.enumerateP=0;
+myp1.enumerateH=0;
+myp1.enumerateV=1;
+var data2=prepData1(10,ilosc1);
+var t1=setInterval('recalc1()',5000);
+
+<!-- graph code2-->
+function recalc2(){
+for(var i=1;i<ilosc2;i++)
+{
+data3[i-1]=data3[i];
+}
+var power_level;
+var ref = database.ref("device1");
+   ref.on("value", gotData);
+   
+  function gotData(data) {
+  var power = data.val();
+  // Grab the keys to iterate over the object
+  var keys = Object.keys(power);
+  console.log(keys);
+  for (var i = keys.length-1; i < keys.length; i++) {
+    var key = keys[i];
+    // Look at each fruit object!
+    power_level = power[key].power_value;
+	console.log(power_level);
+     }
+	}
+	/*function errData(err)
+	{
+	console.log('Error!');
+	console.log(err);
+	}*/
+	setTimeout(function(){ console.log(power_level);
+data3[ilosc2-1]=power_level;
+myp2.data=data3;
+myp2.plot();
+	}, 2000)	;
+}
+
+
+function prepData2(range2,amount2){
+var arr2= new Array(amount2);
+for(var i=0;i<amount2;i++){
+arr2[i]=-5;
+}
+return arr2;
+}
+
+var ilosc2=200;
+var myp2=new MakeDraw();
+myp2.id="canv2";
+myp2.plotColor='rgba(200,232,53,1)';
+myp2.gridColor='rgba(0,0,0,0.05)';
+myp2.fSize=15;
+myp2.enumerateP=0;
+myp2.enumerateH=0;
+myp2.enumerateV=1;
+var data3=prepData2(10,ilosc2);
+var t2=setInterval('recalc2()',5000);
+
+<!-- graph code3-->
+function recalc3(){
+for(var i=1;i<ilosc3;i++)
+{
+data4[i-1]=data4[i];
+}
+var power_level;
+var ref = database.ref("device2");
+   ref.on("value", gotData);
+   
+  function gotData(data) {
+  var power = data.val();
+  // Grab the keys to iterate over the object
+  var keys = Object.keys(power);
+  console.log(keys);
+  for (var i = keys.length-1; i < keys.length; i++) {
+    var key = keys[i];
+    // Look at each fruit object!
+    power_level = power[key].power_value;
+	console.log(power_level);
+     }
+	}
+	/*function errData(err)
+	{
+	console.log('Error!');
+	console.log(err);
+	}*/
+	setTimeout(function(){ console.log(power_level);
+data4[ilosc3-1]=power_level;
+myp3.data=data4;
+myp3.plot();
+	}, 2000)	;
+}
+
+
+function prepData3(range3,amount3){
+var arr3= new Array(amount3);
+for(var i=0;i<amount3;i++){
+arr3[i]=-5;
+}
+return arr3;
+}
+
+var ilosc3=200;
+var myp3=new MakeDraw();
+myp3.id="canv3";
+myp3.plotColor='rgba(200,232,53,1)';
+myp3.gridColor='rgba(0,0,0,0.05)';
+myp3.fSize=15;
+myp3.enumerateP=0;
+myp3.enumerateH=0;
+myp3.enumerateV=1;
+var data4=prepData3(10,ilosc3);
+var t3=setInterval('recalc3()',5000);
+</script>
+<script>
+  // Initialize Firebase
+ /*// var config = {
+   / apiKey: "AIzaSyBbqsE2BwPPzqBSM3irWHTMQeLRpNXgQrI",
+    //authDomain: "iotapp-58ab6.firebaseapp.com",
+    //databaseURL: "https://iotapp-58ab6.firebaseio.com",
+    projectId: "iotapp-58ab6",
+    storageBucket: "iotapp-58ab6.appspot.com",
+    messagingSenderId: "524890132392"
+  };*/
+ // firebase.initializeApp(config);
+  var database = firebase.database();
+  
+  
+  
+  (function() {
+  $(document).ready(function() {
+    $('.switch-input1').on('change', function() {
+      var isChecked1 = $(this).is(':checked');
+      var ref = firebase.database().ref('devices');
+	  if(isChecked1){
+ref.child('device1').set(1);
+}else{
+ref.child('device1').set(0);
+
+}
+      console.log('isChecked1: ' + isChecked1); 
+      
+    });
+    
+    // Params ($selector, boolean)
+    function setSwitchState(el, flag) {
+      el.attr('checked', flag);
+    }
+    // Usage
+    var database1 = firebase.database();
+   var ref1 = database1.ref("devices");
+   ref1.on("value", gotData1);
+   
+   function gotData1(data1) {
+   var power1 = data1.val();
+   console.log('running device1');
+   console.log(power1.device1);
+   if(power1.device1){
+   setSwitchState($('.switch-input1'), true);
+   }else{
+   setSwitchState($('.switch-input1'), false);
+     }
+    
+    }
+    
+    
+    
+    $('.switch-input2').on('change', function() {
+      var isChecked2 = $(this).is(':checked');
+        var ref = firebase.database().ref('devices');
+	  if(isChecked2){
+ref.child('device2').set(1);
+}else{
+ref.child('device2').set(0);
+
+}   
+      console.log('isChecked2: ' + isChecked2); 
+    });
+    
+    // Params ($selector, boolean)
+    
+    // Usage
+    var database2 = firebase.database();
+   var ref2 = database2.ref("devices");
+   ref2.on("value", gotData2);
+   
+   function gotData2(data2) {
+   var power2 = data2.val();
+   console.log('running device2');
+   console.log(power2.device2);
+   if(power2.device2){
+   setSwitchState($('.switch-input2'), true);
+   }else{
+   setSwitchState($('.switch-input2'), false);
+     }
+    
+    }
+    
+    
+    $('.switch-input3').on('change', function() {
+      var isChecked3 = $(this).is(':checked');
+	       var ref = firebase.database().ref('devices');
+	  if(isChecked3){
+ref.child('device3').set(1);
+}else{
+ref.child('device3').set(0);
+
+}
+
+
+      console.log('isChecked3: ' + isChecked3); 
+      
+    });
+    
+    // Params ($selector, boolean)
+    
+    // Usage
+	var database3 = firebase.database();
+   var ref3 = database3.ref("devices");
+   ref3.on("value", gotData3);
+   
+   function gotData3(data3) {
+   var power3 = data3.val();
+   console.log('running device3');
+   console.log(power3.device3);
+   if(power3.device3){
+   setSwitchState($('.switch-input3'), true);
+   }else{
+   setSwitchState($('.switch-input3'), false);
+     }
+    
+    }
+    
+    $('.switch-input4').on('change', function() {
+      var isChecked4 = $(this).is(':checked');
+	         var ref = firebase.database().ref('devices');
+	  if(isChecked4){
+ref.child('device4').set(1);
+}else{
+ref.child('device4').set(0);
+
+}
+      console.log('isChecked4: ' + isChecked4); 
+      
+    });
+    
+    // Params ($selector, boolean)
+    
+    // Usage
+    var database4 = firebase.database();
+   var ref4 = database4.ref("devices");
+   ref4.on("value", gotData4);
+   
+   function gotData4(data4) {
+   var power4 = data4.val();
+   console.log('running device4');
+   console.log(power4.device4);
+   if(power4.device4){
+   setSwitchState($('.switch-input4'), true);
+   }else{
+   setSwitchState($('.switch-input4'), false);
+     }
+    
+    }
+    
+  });
+  
+  
+})();
+
+</script>
+<script>
+ 
+  function f1()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device1').set(1);
+function setSwitchState(el, flag) {
+      el.attr('checked', flag);
+    }
+setSwitchState($('.switch-input1'), true);
+  }
+  function f2()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device1').set(0);
+function setSwitchState(el, flag) {
+      el.attr('checked', flag);
+    }
+setSwitchState($('.switch-input1'), false);
+  }
+  function f3()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device2').set(1);
+function setSwitchState(el, flag) {
+      el.attr('checked', flag);
+    }
+setSwitchState($('.switch-input2'), true);
+  }
+  function f4()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device2').set(0);
+function setSwitchState(el, flag) {
+      el.attr('checked', flag);
+    }
+setSwitchState($('.switch-input2'), falsee);
+  }
+  function f5()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device3').set(1);
+function setSwitchState(el, flag) {
+      el.attr('checked', flag);
+    }
+setSwitchState($('.switch-input3'), true);
+  }
+  function f6()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device3').set(0);
+function setSwitchState(el, flag) {
+      el.attr('checked', flag);
+    }
+setSwitchState($('.switch-input3'), false);
+  }
+  function f7()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device4').set(1);
+function setSwitchState(el, flag) {
+      el.attr('checked', flag);
+    }
+setSwitchState($('.switch-input4'), true);
+  }
+  function f8()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('device4').set(0);
+function setSwitchState(el, flag) {
+      el.attr('checked', flag);
+    }
+setSwitchState($('.switch-input4'), false);
+  }
+  
+
+function speech()
+	{
+var myRec = new p5.SpeechRec();
+	
+	//	myRec.onResult = showResult;
+		myRec.start();
+	
+		setTimeout(function(){if(myRec.resultValue==true) {
+		//alert("Hello! I am an alert box!!");
+			//document.getElementById("test").innerHTML=myRec.resultString;
+            console.log(myRec.resultString);
+			if(myRec.resultString=='on'||myRec.resultString=='start'||myRec.resultString=='strt'){
+			f1();
+			alert("Device is turned on")
+			}
+			else if(myRec.resultString=='off'||myRec.resultString=='stop'||myRec.resultString=='of')
+			{
+			f2();
+			alert("Device is turned off")
+			}
+			else
+			{
+			alert("Wrong command:"+myRec.resultString+"  ::Please Try again")
+			}
+			
+			
+		}},4000);
+	
+	}
+	function speech2()
+	{
+var myRec = new p5.SpeechRec();
+	
+	//	myRec.onResult = showResult;
+		myRec.start();
+	
+		setTimeout(function(){if(myRec.resultValue==true) {
+		//alert("Hello! I am an alert box!!");
+		//	document.getElementById("test").innerHTML=myRec.resultString;
+            console.log(myRec.resultString);
+			if(myRec.resultString=='on'||myRec.resultString=='start'||myRec.resultString=='strt'){
+			f3();
+			alert("Device is turned on")
+			}
+			else if(myRec.resultString=='off'||myRec.resultString=='stop'||myRec.resultString=='of')
+			{
+			f4();
+			alert("Device is turned off")
+			}
+			else
+			{
+			alert("Wrong command:"+myRec.resultString+" !!Please Try again")
+			}
+			
+			
+		}},4000);
+	
+	}
+	function speech3()
+	{
+var myRec = new p5.SpeechRec();
+	
+	//	myRec.onResult = showResult;
+		myRec.start();
+	
+		setTimeout(function(){if(myRec.resultValue==true) {
+		//alert("Hello! I am an alert box!!");
+		//	document.getElementById("test").innerHTML=myRec.resultString;
+            console.log(myRec.resultString);
+			if(myRec.resultString=='on'||myRec.resultString=='start'||myRec.resultString=='strt'){
+			f5();
+			alert("Device is turned on")
+			}
+			else if(myRec.resultString=='off'||myRec.resultString=='stop'||myRec.resultString=='of')
+			{
+			f6();
+			alert("Device is turned off")
+			}
+			else
+			{
+			alert("Wrong command:"+myRec.resultString+" !!Please Try again")
+			}
+			
+			
+		}},4000);
+	
+	}
+	function speech4()
+	{
+var myRec = new p5.SpeechRec();
+	
+	//	myRec.onResult = showResult;
+		myRec.start();
+	
+		setTimeout(function(){if(myRec.resultValue==true) {
+		//alert("Hello! I am an alert box!!");
+		//	document.getElementById("test").innerHTML=myRec.resultString;
+            console.log(myRec.resultString);
+			if(myRec.resultString=='on'||myRec.resultString=='start'||myRec.resultString=='strt'){
+			f7();
+			alert("Device is turned on")
+			}
+			else if(myRec.resultString=='off'||myRec.resultString=='stop'||myRec.resultString=='of')
+			{
+			f8();
+			alert("Device is turned off")
+			}
+			else
+			{
+			alert("Wrong command:"+myRec.resultString+" !!Please Try again")
+			}
+			
+			
+		}},4000);
+	
+	}
+	  
+</script>
+
+<script>
+function ShowDiv1() {divTest = document.getElementById('myDiv1');
+if (divTest.style.display === "none") {
+                divTest.style.display = '';
+         } else if (divTest.style.display === "") {
+                 divTest.style.display = "none";
+        }
+}
+function ShowDiv2() {divTest = document.getElementById('myDiv2');
+if (divTest.style.display === "none") {
+                divTest.style.display = '';
+         } else if (divTest.style.display === "") {
+                 divTest.style.display = "none";
+        }
+}
+function ShowDiv3() {divTest = document.getElementById('myDiv3');
+if (divTest.style.display === "none") {
+                divTest.style.display = '';
+         } else if (divTest.style.display === "") {
+                 divTest.style.display = "none";
+        }
+}
+function ShowDiv4() {divTest = document.getElementById('myDiv4');
+if (divTest.style.display === "none") {
+                divTest.style.display = '';
+         } else if (divTest.style.display === "") {
+                 divTest.style.display = "none";
+        }
+}
+</script>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Logo</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="avatar3.png" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+  <!--  <div class="w3-col s8 w3-bar">
+      <span><strong>User</strong></span><br>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
+    </div>   -->
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>Dashboard</h5>
+  </div>
+  <div class="w3-bar-block">
+ <!--   <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>  -->
+    <a href="auto/automate.html" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Preferences</a>
+    <a href="device1.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Visualize Device1</a>
+	<a href="device2.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Visualize Device2</a>
+ <!--   <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Traffic</a>   -->
+ <!--   <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>    -->
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-plus fa-fw"></i>  Add Device</a>     
+  <!--  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>        -->
+ <!--   <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a>        -->
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a><br><br>
+	<a href="signout.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-plus fa-fw"></i>  Log Out</a>     
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i>  Devices</b></h5>
+  </header>
+
+  
+  
+  <div class="w3-row-padding w3-margin-bottom">
+  
+  
+    <div class="w3-quarter w3-padding-small">
+      <div class="w3-container w3-white w3-padding-16">
+	  
+       <img class="w3-left" src="fan.png">
+	   <div class="w3-right">
+	   <button style="font-size:24px" onclick="ShowDiv1()"> <i class="fa fa-bar-chart"></i></button>
+	   <!--   <button style="font-size:24px" onclick="speech2()"> <i class="fas fa-microphone"></i></button>-->
+	   </div>
+	   <button style="font-size:24px" onclick="speech2()">
+<img src="micro.png" >
+</button> 
+        <div class="w3-right">
+	<!--	<img class="w3-left w3-padding-small" src="analytics.png">  -->
+         <label class="switch1">
+  <input class="switch-input1" type="checkbox" />
+  <span class="switch-label1" data-on="ON" data-off="OFF"></span> 
+  <span class="switch-handle1"></span>
+  </label>
+
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Device1</h4>
+      </div>
+	  <div class="w3-white" id="myDiv1" style="display:none;width:100%" >
+<canvas style="max-width:100%,max-height:100%" id="canv"></canvas>
+</div>
+    </div>
+	
+	
+	
+	
+    <div class="w3-quarter w3-padding-small">
+      <div class="w3-container w3-white w3-padding-16">
+	  
+       <img class="w3-left" src="bulb.png">
+	   <div class="w3-right">
+	   <button style="font-size:24px" onclick="ShowDiv2()"> <i class="fa fa-bar-chart"></i></button>
+	<!--   <button style="font-size:24px" onclick="speech2()"> <i class="fas fa-microphone"></i></button>-->
+	   </div>
+	   <button style="font-size:24px" onclick="speech2()">
+<img src="micro.png" >
+</button> 
+        <div class="w3-right">
+	<!--	<img class="w3-left w3-padding-small" src="analytics.png">  -->
+         <label class="switch2">  
+  <input class="switch-input2" type="checkbox" />
+  <span class="switch-label2" data-on="ON" data-off="OFF"></span> 
+  <span class="switch-handle2"></span>
+  </label>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Device2</h4>
+      </div>
+	  <div class="w3-white" id="myDiv2" style="display:none;width:100%;">
+<canvas style="width:100%,height=100px" id="canv1"></canvas>
+</div>
+    </div>
+	
+	
+	
+	
+    <div class="w3-quarter w3-padding-small">
+      <div class="w3-container w3-white w3-padding-16">
+	  
+       <img class="w3-left" src="ac.png">
+	   <div class="w3-right">
+	   <button style="font-size:24px" onclick="ShowDiv3()"> <i class="fa fa-bar-chart"></i></button>
+	   <!--   <button style="font-size:24px" onclick="speech2()"> <i class="fas fa-microphone"></i></button>-->
+	   </div>
+	   <button style="font-size:24px" onclick="speech3()">
+<img src="micro.png" >
+</button> 
+        <div class="w3-right">
+	<!--	<img class="w3-left w3-padding-small" src="analytics.png"> -->
+          <label class="switch3"> 
+  <input class="switch-input3" type="checkbox" />
+  <span class="switch-label3" data-on="ON" data-off="OFF"></span> 
+  <span class="switch-handle3"></span>
+  </label>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Device3</h4>
+      </div>
+	  <div class="w3-white" id="myDiv3" style="display:none;width:100%;" >
+<canvas style="width:100%,height:100%" id="canv2"></canvas>
+</div>
+    </div>
+	
+	
+	
+    <div class="w3-quarter w3-padding-small">
+      <div class="w3-container w3-white w3-padding-16">
+	  
+       <img class="w3-left" src="tv.png">
+	   <div class="w3-right">
+	   <button style="font-size:24px" onclick="ShowDiv4()"> <i class="fa fa-bar-chart"></i></button>
+	   <!--   <button style="font-size:24px" onclick="speech2()"> <i class="fas fa-microphone"></i></button>-->
+	   </div>
+	   <button style="font-size:24px" onclick="speech4()">
+<img src="micro.png" >
+</button> 
+        <div class="w3-right">
+		<!--<img class="w3-left w3-padding-small" src="analytics.png"> -->
+         <label class="switch4">  
+  <input class="switch-input4" type="checkbox" />
+  <span class="switch-label4" data-on="ON" data-off="OFF"></span> 
+  <span class="switch-handle4"></span>
+ </label>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Device4</h4>
+      </div>
+	  <div class="w3-white" id="myDiv4" style="display:none;width:100%;">
+<canvas style="width:100%, height:100%" id="canv3"></canvas>
+</div>
+    </div>
+	
+  </div>
+
+  
+
+
+  <!-- End page content -->
+</div>
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+    if (mySidebar.style.display === 'block') {
+        mySidebar.style.display = 'none';
+        overlayBg.style.display = "none";
+    } else {
+        mySidebar.style.display = 'block';
+        overlayBg.style.display = "block";
+    }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+    mySidebar.style.display = "none";
+    overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+</html>

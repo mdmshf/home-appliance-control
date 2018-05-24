@@ -1,0 +1,57 @@
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+    <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  //document.addEventListener('DOMContentLoaded', function () {
+  
+  function f1()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('AC').set(1);
+  }
+  function f2()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('AC').set(0);
+  }
+  function f3()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('bulb').set(1);
+  }
+  function f4()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('bulb').set(0);
+  }
+  function f5()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('fan').set(1);
+  }
+  function f6()
+  {
+	   var ref = firebase.database().ref('devices');
+ref.child('fan').set(0);
+  }
+  
+  
+   //});
+   </script>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <button class="w3-bar-item w3-button w3-green">ON</button>
+  <button class="w3-bar-item w3-button w3-gray">OFF</button>
+  <button class="w3-bar-item w3-button w3-red">Visualize</button>
+  
+  

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login V3</title>
+	</head>
+<body>
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script>
+var config = {
+    apiKey: "AIzaSyAjRGV4SyGiQBJ04yel9gnrWmaxTukRuNY",
+    authDomain: "raspberrypi-17a5b.firebaseapp.com",
+    databaseURL: "https://raspberrypi-17a5b.firebaseio.com",
+    projectId: "raspberrypi-17a5b",
+    storageBucket: "raspberrypi-17a5b.appspot.com",
+    messagingSenderId: "270977256797"
+  };
+  console.log("hello");
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  var signin;
+  //console.log(database);
+  var ref1 = database.ref('users');
+  ref1.on("value",gotData);
+  function gotData(data) {
+   user1 = data.val();
+   signin=user1.signedin;
+   console.log(signin);
+     }
+setTimeout(function(){
+console.log("hello");
+console.log(signin);
+if ( signin==1){
+window.location.href = "app.html"; // Redirecting to other page.
+return false;
+}
+else{
+window.location.href = "login.html";
+
+}
+},2000);
+ </script>
+</body>
+</html>
